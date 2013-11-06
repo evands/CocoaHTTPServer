@@ -1582,6 +1582,15 @@ static NSMutableArray *recentNonces;
 **/
 - (NSString *)filePathForURI:(NSString *)path allowDirectory:(BOOL)allowDirectory
 {
+#ifdef DEMO_BUILD
+    /* totally hacktastic to force the web server to provide files from within the app bundle for the Apple demo build*/
+	for (NSString *bundledPdfPath in [[NSBundle mainBundle] pathsForResourcesOfType:@"pdf" inDirectory:@""]) {
+        if ([[bundledPdfPath lastPathComponent] caseInsensitiveCompare:[[path lastPathComponent] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] == NSOrderedSame) {
+            return bundledPdfPath;
+        }
+    }
+#endif
+    
 	HTTPLogTrace();
 	
 	// Override me to perform custom path mapping.
