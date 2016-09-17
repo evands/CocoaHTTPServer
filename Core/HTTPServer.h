@@ -1,24 +1,10 @@
 #import <Foundation/Foundation.h>
+#import "GCDAsyncSocket.h"
 
 @class GCDAsyncSocket;
 @class WebSocket;
 
-#if TARGET_OS_IPHONE
-  #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 40000 // iPhone 4.0
-    #define IMPLEMENTED_PROTOCOLS <NSNetServiceDelegate>
-  #else
-    #define IMPLEMENTED_PROTOCOLS 
-  #endif
-#else
-  #if MAC_OS_X_VERSION_MIN_REQUIRED >= 1060 // Mac OS X 10.6
-    #define IMPLEMENTED_PROTOCOLS <NSNetServiceDelegate>
-  #else
-    #define IMPLEMENTED_PROTOCOLS 
-  #endif
-#endif
-
-
-@interface HTTPServer : NSObject IMPLEMENTED_PROTOCOLS
+@interface HTTPServer : NSObject <NSNetServiceDelegate, GCDAsyncSocketDelegate>
 {
 	// Underlying asynchronous TCP/IP socket
 	GCDAsyncSocket *asyncSocket;
@@ -181,7 +167,7 @@
  * NSError *err = nil;
  * if (![httpServer start:&err])
  * {
- *     NSLog(@"Error starting http server: %@", err);
+ *     RPLog(@"Error starting http server: %@", err);
  * }
 **/
 - (BOOL)start:(NSError **)errPtr;

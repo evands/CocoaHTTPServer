@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "GCDAsyncSocket.h"
 
 @class HTTPMessage;
 @class GCDAsyncSocket;
@@ -6,7 +7,7 @@
 
 #define WebSocketDidDieNotification  @"WebSocketDidDie"
 
-@interface WebSocket : NSObject
+@interface WebSocket : NSObject <GCDAsyncSocketDelegate>
 {
 	dispatch_queue_t websocketQueue;
 	
